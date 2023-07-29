@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomeSection from "./components/HomeSection";
+import Login from "./components/Login";
 
 const Routing = () => {
   const router = createBrowserRouter([
@@ -9,6 +10,12 @@ const Routing = () => {
         <HomeSection />
       ),
     },
+    {
+      path: "/login",
+      element: (
+        <Login />
+      )
+    }
   ]);
   return <RouterProvider router={router} />;
 };
