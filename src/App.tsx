@@ -1,14 +1,11 @@
-import './App.scss'
-import Button from "react-bootstrap/Button";
+import "./App.scss";
+import ClientApp from "./ClientApp";
 
 function App() {
 
   return (
-    <>
-      <div className=''></div>
-      <Button variant='primary' className='btn'>Primary</Button>
-    </>
+    <ClientApp />
   );
 }
 
-export default App
+export default App;
