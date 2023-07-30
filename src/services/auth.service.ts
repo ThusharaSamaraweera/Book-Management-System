@@ -15,6 +15,7 @@ export default class authService {
       const res = await axios.post(`${BASE_URL}/auth/login`, payload, config);
       return res.data;
     } catch (error) {
+      console.error(error);
       return new Error("Login failed");
     }
   }

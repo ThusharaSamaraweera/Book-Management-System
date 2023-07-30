@@ -34,7 +34,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
   return (
     <Row className='filter-section'>
       <Row>
-        <Col xs={12} className='mt-3'>
+        <Col xs={6} md={4} className='mt-3'>
           <FloatingLabel controlId='title' label='Search by title' className='title-filter'>
             <Form.Control
               type='text'
@@ -44,7 +44,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
             />
           </FloatingLabel>
         </Col>
-        <Col xs={12} className='mt-3'>
+        <Col xs={6} md={4} className='mt-3'>
           <FloatingLabel controlId='author' label='Search by author' className='author-filter'>
             <Form.Control
               type='text'
@@ -54,7 +54,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
             />
           </FloatingLabel>
         </Col>
-        <Col xs={12} className='mt-3'>
+        <Col xs={12} md={4} className='mt-3'>
           <FloatingLabel controlId='genre' label='Filter by genre'>
             <Form.Select onChange={(event) => handleOnChange(event, FilterBy.GENRE)}>
               <option>---</option>
@@ -70,7 +70,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
         </Col>
       </Row>
       <Col xs={12}>
-        <button className='btn btn-primary mt-3 w-100' onClick={handleOnClickSearch}>Search</button>
+        <button className='btn btn-primary mt-3 w-100' onClick={handleOnClickSearch}>
+          Search
+        </button>
       </Col>
     </Row>
   );
