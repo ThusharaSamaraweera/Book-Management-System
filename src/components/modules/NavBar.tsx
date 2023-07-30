@@ -14,8 +14,8 @@ const NavBar = () => {
             <Nav.Link href='./login'>Login</Nav.Link>
             <Nav.Link href='#link'>Sign up</Nav.Link>
             <NavDropdown title='Dropdown' id='basic-nav-dropdown'>
-              <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.2'>Another action</NavDropdown.Item>
+              <NavDropdown.Item href='#action/3.1'>Profile</NavDropdown.Item>
+              <NavDropdown.Item href='/add-book'>Add Book</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href='#action/3.4'>Logout</NavDropdown.Item>
             </NavDropdown>
