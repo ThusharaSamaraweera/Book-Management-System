@@ -1,10 +1,12 @@
 import "./App.scss";
 import ClientApp from "./ClientApp";
+import { ReduxProvider } from "./providers/ReduxProvider";
 
 function App() {
-
   return (
-    <ClientApp />
+    <ReduxProvider>
+      <ClientApp />
+    </ReduxProvider>
   );
 }
 

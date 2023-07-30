@@ -4,6 +4,8 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 import authService from "../../services/auth.service";
+import { useDispatch } from "react-redux";
+import { AppDispatch, setUser } from "../../store";
 
 const Login = () => {
   const [validated, setValidated] = useState(false);
@@ -11,6 +13,7 @@ const Login = () => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleOnLogin = async (event: any) => {
     event.preventDefault();
@@ -18,8 +21,10 @@ const Login = () => {
     try {
       const res = await authService.login(formValues.email, formValues.password);
       setValidated(true);
-      navigate("/")
+      dispatch(setUser(res?.data?.user));
+      navigate("/");
     } catch (error) {
+      console.log(error);
     } finally {
       setLoading(false);
     }

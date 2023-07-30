@@ -1,4 +1,4 @@
-import { FilterValues } from "../modal";
+import { FilterValues, NewBook } from "../modal";
 import { HTTPS_METHODS, restClient } from "../utils/restClient";
 
 export default class BookService {
@@ -18,4 +18,16 @@ export default class BookService {
         throw new Error("Failed to fetch books");
       });
   };
+
+  static addBook = async (book: NewBook) => {
+    return await restClient(HTTPS_METHODS.POST, `books`, book, undefined)
+      .then((res) => {
+        console.log("🚀 ~ file: book.service.ts:25 ~ BookService ~ .then ~ res:", res)
+        return res.data
+      })
+      .catch((err) => {
+        console.error(err);
+        throw new Error("Failed to add book");
+      });
+  }
 }
