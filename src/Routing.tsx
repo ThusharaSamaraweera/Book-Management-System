@@ -1,21 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomeSection from "./components/HomeSection";
-import Login from "./components/Login";
+import Login from "./components/pages/Login";
+import LandingPage from "./components/pages/LandingPage";
 
 const Routing = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <HomeSection />
-      ),
+      element: <LandingPage />,
     },
     {
       path: "/login",
-      element: (
-        <Login />
-      )
-    }
+      element: <Login />,
+    },
   ]);
   return <RouterProvider router={router} />;
 };

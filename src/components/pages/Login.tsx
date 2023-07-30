@@ -1,23 +1,25 @@
 import { useState } from "react";
 import { Col, Form, InputGroup, Row, Button, Spinner } from "react-bootstrap";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import authService from "../services/auth.service";
+import { useNavigate } from "react-router-dom";
+
+import authService from "../../services/auth.service";
 
 const Login = () => {
   const [validated, setValidated] = useState(false);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleOnLogin = async (event: any) => {
     event.preventDefault();
     setLoading(true);
     try {
       const res = await authService.login(formValues.email, formValues.password);
-      console.log("🚀 ~ file: Login.tsx:15 ~ handleOnLogin ~ res:", res)
       setValidated(true);
+      navigate("/")
     } catch (error) {
-      console.log("🚀 ~ file: Login.tsx:17 ~ handleOnLogin ~ error", error)
     } finally {
       setLoading(false);
     }
@@ -38,7 +40,7 @@ const Login = () => {
           <h4 className='login-form-title'>Log into your account</h4>
         </Row>
         <Form noValidate validated={validated} className='login-form' onSubmit={handleOnLogin}>
-          <Form.Group controlId='email' className="email-group">
+          <Form.Group controlId='email' className='email-group'>
             <Form.Label>Email</Form.Label>
             <Form.Control
               value={formValues?.email}
