@@ -1,13 +1,27 @@
 import { useState } from "react";
-import { Col, Form, InputGroup, Row } from "react-bootstrap";
+import { Col, Form, InputGroup, Row, Button, Spinner } from "react-bootstrap";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import authService from "../services/auth.service";
 
 const Login = () => {
   const [validated, setValidated] = useState(false);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
-  const handleOnLogin = (event: any) => {};
+  const handleOnLogin = async (event: any) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      const res = await authService.login(formValues.email, formValues.password);
+      console.log("🚀 ~ file: Login.tsx:15 ~ handleOnLogin ~ res:", res)
+      setValidated(true);
+    } catch (error) {
+      console.log("🚀 ~ file: Login.tsx:17 ~ handleOnLogin ~ error", error)
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleOnChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues((prev) => ({ ...prev, [event.target.id]: event.target.value }));
@@ -24,7 +38,7 @@ const Login = () => {
           <h4 className='login-form-title'>Log into your account</h4>
         </Row>
         <Form noValidate validated={validated} className='login-form' onSubmit={handleOnLogin}>
-          <Form.Group controlId='email'>
+          <Form.Group controlId='email' className="email-group">
             <Form.Label>Email</Form.Label>
             <Form.Control
               value={formValues?.email}
@@ -57,6 +71,13 @@ const Login = () => {
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
+
+          <Row className='login-btn justify-content-center mt-2'>
+            <Button type='submit' disabled={isLoading}>
+              {isLoading && <Spinner as='span' animation='border' size='sm' role='status' aria-hidden='true' />}
+              Login
+            </Button>
+          </Row>
         </Form>
       </Col>
     </Row>
