@@ -5,3 +5,11 @@ export interface IBook {
   genre: string;
   createdBy: string;
 }
+
+export interface FilterValues {
+  title?: string;
+  author?: string;
+  genre?: string;
+  page: number;
+  limit: number;
+}
