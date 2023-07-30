@@ -1,14 +1,18 @@
 import { Col, FloatingLabel, Form, Row } from "react-bootstrap";
-import { genre } from "../../assets/constants";
 import { useState } from "react";
+import { GENRES } from "../../constants";
 
 enum FilterBy {
-    TITLE = "title",
-    AUTHOR = "author",
-    GENRE = "genre",
+  TITLE = "title",
+  AUTHOR = "author",
+  GENRE = "genre",
 }
 
-const FilterSection = () => {
+interface FilterSectionProps {
+  handleOnFilterClick: (filterValues: any) => void;
+}
+
+const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
   const [filterValues, setFilterValues] = useState({
     title: "",
     author: "",
@@ -16,45 +20,57 @@ const FilterSection = () => {
   });
 
   const handleOnChange = (event: any, type: FilterBy) => {
-    setFilterValues({ ...filterValues, [type]: event.target.value });
+    const value = event.target.value;
+    setFilterValues({
+      ...filterValues,
+      [type]: value,
+    });
   };
 
-  console.log("🚀 ~ file: FilterSection.tsx:6 ~ handleOnChange ~ filterValues:", filterValues);
+  const handleOnClickSearch = () => {
+    handleOnFilterClick(filterValues);
+  }
+
   return (
     <Row className='filter-section'>
-      <Col xs={12} className='mt-3'>
-        <FloatingLabel controlId='title' label='Search by title' className='title-filter'>
-          <Form.Control
-            type='text'
-            placeholder='Search by title'
-            size='sm'
-            onChange={(event) => handleOnChange(event, FilterBy.TITLE)}
-          />
-        </FloatingLabel>
-      </Col>
-      <Col xs={12} className='mt-3'>
-        <FloatingLabel controlId='author' label='Search by author' className='author-filter'>
-          <Form.Control
-            type='text'
-            placeholder='Search by author'
-            size='sm'
-            onChange={(event) => handleOnChange(event, FilterBy.AUTHOR)}
-          />
-        </FloatingLabel>
-      </Col>
-      <Col xs={12} className='mt-3'>
-        <FloatingLabel controlId='genre' label='Filter by genre'>
-          <Form.Select onChange={(event) => handleOnChange(event, FilterBy.GENRE)}>
-            <option>---</option>
-            {genre.map((item, index) => {
-              return (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              );
-            })}
-          </Form.Select>
-        </FloatingLabel>
+      <Row>
+        <Col xs={12} className='mt-3'>
+          <FloatingLabel controlId='title' label='Search by title' className='title-filter'>
+            <Form.Control
+              type='text'
+              placeholder='Search by title'
+              size='sm'
+              onChange={(event) => handleOnChange(event, FilterBy.TITLE)}
+            />
+          </FloatingLabel>
+        </Col>
+        <Col xs={12} className='mt-3'>
+          <FloatingLabel controlId='author' label='Search by author' className='author-filter'>
+            <Form.Control
+              type='text'
+              placeholder='Search by author'
+              size='sm'
+              onChange={(event) => handleOnChange(event, FilterBy.AUTHOR)}
+            />
+          </FloatingLabel>
+        </Col>
+        <Col xs={12} className='mt-3'>
+          <FloatingLabel controlId='genre' label='Filter by genre'>
+            <Form.Select onChange={(event) => handleOnChange(event, FilterBy.GENRE)}>
+              <option>---</option>
+              {GENRES.map((item, index) => {
+                return (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                );
+              })}
+            </Form.Select>
+          </FloatingLabel>
+        </Col>
+      </Row>
+      <Col xs={12}>
+        <button className='btn btn-primary mt-3 w-100' onClick={handleOnClickSearch}>Search</button>
       </Col>
     </Row>
   );

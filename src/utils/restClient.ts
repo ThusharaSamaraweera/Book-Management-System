@@ -8,14 +8,21 @@ export enum HTTPS_METHODS {
   DELETE = "delete",
 }
 
-export const restClient = async (method: HTTPS_METHODS, url: string, body = {}, contentType = "application/json") => {
+export const restClient = async (
+  method: HTTPS_METHODS,
+  url: string,
+  body = {},
+  contentType = "application/json",
+  params?: unknown
+) => {
   const token = sessionStorage.getItem("token");
 
   return await axios({
     method,
-    baseURL: `${BASE_URL}`,
+    baseURL: BASE_URL,
     url,
     data: body,
+    params,
     headers: {
       "auth-token": `Bearer ${token}`,
       Accept: contentType,

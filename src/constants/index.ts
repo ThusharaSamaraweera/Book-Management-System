@@ -1,4 +1,4 @@
-export const genre: string[] = [
+export const GENRES: string[] = [
   "Action",
   "Adventure",
   "Comedy",

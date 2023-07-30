@@ -6,7 +6,6 @@ const ClientApp = () => {
     <>
       <NavBar />
       <Routing />
-      <div>footer</div>
     </>
   );
 };
