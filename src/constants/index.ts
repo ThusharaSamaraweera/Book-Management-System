@@ -1,0 +1,17 @@
+export const GENRES: string[] = [
+  "Dystopian fiction",
+  "Satirical allegory",
+  "Fantasy",
+  "Southern Gothic novel",
+  "Regency romance",
+  "Jazz Age novel",
+  "Coming-of-age novel",
+  "Science fiction",
+  "Sci-fi comedy",
+  "Dystopian fiction",
+  "Historical fiction",
+  "Mystery",
+  "Historical fiction",
+  "Thriller",
+  "Mystery",
+];

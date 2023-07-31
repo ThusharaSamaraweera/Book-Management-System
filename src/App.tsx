@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.scss";
+import ClientApp from "./ClientApp";
+import { ReduxProvider } from "./providers/ReduxProvider";
+import Login from "./components/pages/Login";
+import LandingPage from "./components/pages/LandingPage";
+import AddBook from "./components/pages/AddBook";
+import RouterProtector from "./utils/RouterProtector";
+import Book from "./components/pages/Book";
+import SignUp from "./components/pages/Signup";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <ReduxProvider>
+        <Routes>
+          <Route path='/' element={<ClientApp />}>
+            <Route path='/' element={<LandingPage />} />
+            <Route
+              path='/add-book'
+              element={
+                <RouterProtector>
+                  <AddBook />
+                </RouterProtector>
+              }
+            />
+            <Route
+              path='/update-book/:id'
+              element={
+                <RouterProtector>
+                  <AddBook />
+                </RouterProtector>
+              }
+            />
+            <Route path='/books/:id' element={<Book />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/sign-up' element={<SignUp />} />
+          </Route>
+        </Routes>
+      </ReduxProvider>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

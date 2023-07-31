@@ -1,0 +1,13 @@
+.navbar {
+  .container {
+    .navbar-collapse {
+        justify-content: end;
+
+      .navbar-nav {
+        display: flex !important;
+        justify-content: flex-end;
+        margin-right: 0 !important;
+      }
+    }
+  }
+}
