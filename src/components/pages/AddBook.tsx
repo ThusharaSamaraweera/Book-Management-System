@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Container, Form, Row, Spinner } from "react-bootstrap";
 import { GENRES } from "../../constants";
 import { NewBook } from "../../modal";
 import BookService from "../../services/book.service";
+import { useAppSelector } from "../../store";
+import { useNavigate, useParams } from "react-router-dom";
 
 enum BookInputs {
   TITLE = "title",
@@ -11,20 +13,66 @@ enum BookInputs {
   GENRE = "genre",
 }
 
-const AddBook = () => {
+export const AddBook = () => {
+  const loggedUser = useAppSelector((state) => state.global.user);
+  const { id: bookId } = useParams();
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [book, setBook] = useState<NewBook>({
     title: "",
     author: "",
-    publicationYear: 0,
-    genre: "",
+    publicationYear: "",
+    genre: GENRES[0],
   });
 
-  const handleSubmit = async (event: any) => {
+  const getBook = async () => {
+    if (!bookId) {
+      return;
+    }
+    
+    try {
+      const res = await BookService.getBook(bookId);
+      setBook({
+        title: res?.book?.title,
+        author: res?.book?.author,
+        publicationYear: res?.book?.publicationYear,
+        genre: res?.book?.genre,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Get book details if book id is present
+  useEffect(() => {
+    getBook();
+  }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    if (!form.checkValidity() || !book?.publicationYear) {
+      event.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
+    if (!loggedUser) {
+      console.error("User not logged in");
+      return;
+    }
     try {
       setLoading(true);
-      const savedBook = await BookService.addBook(book);
+      if (bookId) {
+        const updatedBook = await BookService.updateBook(bookId, book, loggedUser?.id);
+        alert("Book updated successfully");
+      } else {
+        const savedBook = await BookService.addBook(book, loggedUser?.id);
+        alert("Book added successfully");
+      }
+      navigate("/");
     } catch (error) {
       console.log(error);
     } finally {
@@ -32,11 +80,10 @@ const AddBook = () => {
     }
   };
 
-  const handleOnChange = (event: any, key: BookInputs) => {
+  const handleOnChange = (event, key: BookInputs) => {
     const { value } = event.target;
     setBook((preBook) => ({ ...preBook, [key]: value }));
   };
-  console.log(book);
 
   return (
     <Container>
@@ -51,7 +98,6 @@ const AddBook = () => {
               defaultValue={book?.title}
               onChange={(event) => handleOnChange(event, BookInputs.TITLE)}
             />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Row} controlId='author'>
             <Form.Label>Author</Form.Label>
@@ -61,8 +107,8 @@ const AddBook = () => {
               placeholder='Enter the author'
               defaultValue={book?.author}
               onChange={(event) => handleOnChange(event, BookInputs.AUTHOR)}
+              disabled={isLoading}
             />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Row} controlId='genre'>
             <Form.Label>Publication year</Form.Label>
@@ -72,18 +118,18 @@ const AddBook = () => {
               placeholder='Enter the publication year'
               defaultValue={book?.publicationYear}
               maxLength={4}
+              disabled={isLoading}
               onChange={(event) => handleOnChange(event, BookInputs.PUBLICATION_YEAR)}
             />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Row} controlId='genre'>
             <Form.Label>Genre</Form.Label>
             <Form.Select
+              disabled={isLoading}
               required
               placeholder='Select a genre'
               defaultValue={book?.genre}
               onChange={(event) => handleOnChange(event, BookInputs.GENRE)}>
-              <option>---</option>
               {GENRES.map((item, index) => {
                 return (
                   <option key={index} value={item}>
@@ -96,7 +142,7 @@ const AddBook = () => {
           <Row className='login-btn justify-content-center mt-2'>
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Spinner as='span' animation='border' size='sm' role='status' aria-hidden='true' />}
-              Add book
+              {bookId ? "Update Book" : "Add Book"}
             </Button>
           </Row>
         </Form>

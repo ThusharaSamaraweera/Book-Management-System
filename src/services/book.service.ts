@@ -19,15 +19,37 @@ export default class BookService {
       });
   };
 
-  static addBook = async (book: NewBook) => {
-    return await restClient(HTTPS_METHODS.POST, `books`, book, undefined)
+  static addBook = async (book: NewBook, userId: string) => {
+    return await restClient(HTTPS_METHODS.POST, `users/${userId}/books`, book, undefined)
       .then((res) => {
-        console.log("🚀 ~ file: book.service.ts:25 ~ BookService ~ .then ~ res:", res)
-        return res.data
+        return res.data;
       })
       .catch((err) => {
         console.error(err);
         throw new Error("Failed to add book");
+      });
+  };
+
+  static getBook = async (bookId: string) => {
+    return await restClient(HTTPS_METHODS.GET, `books/${bookId}`, {}, undefined)
+      .then((res) => {
+        return res?.data?.data;
+      })
+      .catch((err) => {
+        console.error(err);
+        throw new Error("Failed to get book");
+      });
+  };
+
+
+  static updateBook = async (bookId: string, book: NewBook, userId: string) => {
+    return await restClient(HTTPS_METHODS.PATCH, `users/${userId}/books/${bookId}`, book, undefined)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.error(err);
+        throw new Error("Failed to update book");
       });
   }
 }

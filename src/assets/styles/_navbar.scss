@@ -1,10 +1,12 @@
 .navbar {
   .container {
     .navbar-collapse {
+        justify-content: end;
+
       .navbar-nav {
-        // background-color: red;
         display: flex !important;
         justify-content: flex-end;
+        margin-right: 0 !important;
       }
     }
   }

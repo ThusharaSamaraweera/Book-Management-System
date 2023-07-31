@@ -10,9 +10,10 @@ enum FilterBy {
 
 interface FilterSectionProps {
   handleOnFilterClick: (filterValues: any) => void;
+  handleOnResetClick: () => void;
 }
 
-const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
+const FilterSection: React.FC<FilterSectionProps> = ({ handleOnFilterClick, handleOnResetClick }) => {
   const [filterValues, setFilterValues] = useState({
     title: "",
     author: "",
@@ -29,7 +30,16 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
 
   const handleOnClickSearch = () => {
     handleOnFilterClick(filterValues);
-  }
+  };
+
+  const handleOnReset = () => {
+    setFilterValues({
+      title: "",
+      author: "",
+      genre: "",
+    });
+    handleOnResetClick();
+  };
 
   return (
     <Row className='filter-section'>
@@ -41,6 +51,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
               placeholder='Search by title'
               size='sm'
               onChange={(event) => handleOnChange(event, FilterBy.TITLE)}
+              value={filterValues.title}
             />
           </FloatingLabel>
         </Col>
@@ -51,12 +62,13 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
               placeholder='Search by author'
               size='sm'
               onChange={(event) => handleOnChange(event, FilterBy.AUTHOR)}
+              value={filterValues.author}
             />
           </FloatingLabel>
         </Col>
         <Col xs={12} md={4} className='mt-3'>
           <FloatingLabel controlId='genre' label='Filter by genre'>
-            <Form.Select onChange={(event) => handleOnChange(event, FilterBy.GENRE)}>
+            <Form.Select onChange={(event) => handleOnChange(event, FilterBy.GENRE)} value={filterValues.genre}>
               <option>---</option>
               {GENRES.map((item, index) => {
                 return (
@@ -72,6 +84,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleOnFilterClick}) => {
       <Col xs={12}>
         <button className='btn btn-primary mt-3 w-100' onClick={handleOnClickSearch}>
           Search
+        </button>
+        <button className='btn btn-secondary mt-3 w-100' onClick={handleOnReset}>
+          Reset
         </button>
       </Col>
     </Row>

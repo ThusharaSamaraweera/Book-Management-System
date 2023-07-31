@@ -6,6 +6,7 @@ export enum HTTPS_METHODS {
   PUT = "put",
   POST = "post",
   DELETE = "delete",
+  PATCH = "patch",
 }
 
 export const restClient = async (
@@ -15,7 +16,7 @@ export const restClient = async (
   contentType = "application/json",
   params?: unknown
 ) => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
   return await axios({
     method,
@@ -24,7 +25,7 @@ export const restClient = async (
     data: body,
     params,
     headers: {
-      "auth-token": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       Accept: contentType,
     },
   })

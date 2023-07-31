@@ -16,7 +16,20 @@ export default class authService {
       return res.data;
     } catch (error) {
       console.error(error);
-      return new Error("Login failed");
+      throw new Error("Login failed");
+    }
+  }
+
+  static async signUp(name: string, email: string, password: string) {
+    const payload = JSON.stringify({ name, email, password });
+
+    try {
+      const res = await axios.post(`${BASE_URL}/auth/signup`, payload, config);
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      throw new Error(error);
     }
   }
 }
+

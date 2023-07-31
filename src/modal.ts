@@ -1,7 +1,8 @@
 export interface IBook {
+  _id: string;
   title: string;
   author: string;
-  publicationYear: number;
+  publicationYear: string;
   genre: string;
   createdBy: string;
 }
@@ -14,11 +15,15 @@ export interface FilterValues {
   limit: number;
 }
 
-export type NewBook = Omit<IBook, "createdBy">;
+export type NewBook = Omit<IBook, "createdBy" | "_id">;
 
 export interface IUser {
-  _id: string;
+  id: string;
   name: string;
   email: string;
-  password: string;
+}
+
+export interface LoginPayload {
+  user: IUser;
+  token: string;
 }

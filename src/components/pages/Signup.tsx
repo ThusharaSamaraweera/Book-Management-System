@@ -1,19 +1,16 @@
-import { useState } from "react";
-import { Col, Form, InputGroup, Row, Button, Spinner } from "react-bootstrap";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Col, Form, InputGroup, Row, Button, Spinner } from "react-bootstrap";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import authService from "../../services/auth.service";
-import { useDispatch } from "react-redux";
-import { AppDispatch, setUser } from "../../store";
 
-const Login = () => {
+const SignUp = () => {
   const [validated, setValidated] = useState(false);
-  const [formValues, setFormValues] = useState({ email: "", password: "" });
+  const [formValues, setFormValues] = useState({ name: "", email: "", password: "" });
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleOnLogin = async (event: any) => {
     event.preventDefault();
@@ -27,12 +24,12 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const res = await authService.login(formValues.email, formValues.password);
       setValidated(true);
-      dispatch(setUser(res?.data));
-      navigate("/");
+      const res = await authService.signUp(formValues?.name, formValues?.email, formValues?.password);
+      navigate("/login");
     } catch (error) {
-      alert("Invalid credentials");
+      form.reset();
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -47,12 +44,26 @@ const Login = () => {
   };
 
   return (
-    <Row className='login-card justify-content-center align-content-center mx-1 mx-xs-2 min-vh-75'>
+    <Row className='sign-card justify-content-center align-content-center mx-1 mx-xs-2 min-vh-75'>
       <Col xs={12} sm={6} className='login-section p-2 p-sm-3 p-md-5'>
         <Row className='mb-4'>
           <h4 className='login-form-title'>Log into your account</h4>
         </Row>
         <Form noValidate validated={validated} className='login-form' onSubmit={handleOnLogin}>
+          <Form.Group controlId='name' className='name-group'>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              value={formValues?.name}
+              type='text'
+              placeholder='Enter name'
+              required
+              onChange={handleOnChanged}
+            />
+            <Form.Control.Feedback type='invalid' className='error-message'>
+              Please provide your name
+            </Form.Control.Feedback>
+          </Form.Group>
+
           <Form.Group controlId='email' className='email-group'>
             <Form.Label>Email</Form.Label>
             <Form.Control
@@ -90,7 +101,7 @@ const Login = () => {
           <Row className='login-btn justify-content-center mt-2'>
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Spinner as='span' animation='border' size='sm' role='status' aria-hidden='true' />}
-              Login
+                Sign Up
             </Button>
           </Row>
         </Form>
@@ -99,4 +110,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
