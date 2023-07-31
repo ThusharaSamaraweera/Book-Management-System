@@ -16,7 +16,7 @@ export const BookCard: React.FC<BookCardProps> = ({ title, author, publicationYe
   };
 
   return (
-    <Col className='flex-column card m-2 p-3 book-card' xs={3} onClick={handleOnClick}>
+    <Col className='flex-column card m-2 p-3 book-card' xs={12} md={3}  onClick={handleOnClick}>
       <Col>
         <h5>{title}</h5>
       </Col>

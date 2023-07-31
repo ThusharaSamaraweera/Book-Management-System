@@ -52,4 +52,16 @@ export default class BookService {
         throw new Error("Failed to update book");
       });
   }
+
+  static deleteBook = async (bookId: string, userId: string) => {
+    return await restClient(HTTPS_METHODS.DELETE, `users/${userId}/books/${bookId}`, {}, undefined)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.error(err);
+        throw new Error("Failed to delete book");
+      });
+  }
 }
+

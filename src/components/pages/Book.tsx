@@ -5,6 +5,7 @@ import { IBook } from "../../modal";
 import BookService from "../../services/book.service";
 import { Button, Container, Row, Spinner } from "react-bootstrap";
 import ProtectedComponent from "../utils/ProtectedComponent";
+import { useAppSelector } from "../../store";
 
 const Book = () => {
   const [book, setBook] = useState<IBook>({
@@ -18,6 +19,7 @@ const Book = () => {
   const { id } = useParams();
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const loggedUser = useAppSelector((state) => state.global.user);
 
   const getBook = async () => {
     if (!id) {
@@ -53,6 +55,22 @@ const Book = () => {
     navigate("/update-book/" + id);
   };
 
+  const handleOnClickDelete = async () => {
+    if (!id) {
+      console.error("No book id found");
+      return;
+    }
+    try {
+      setLoading(true);
+      await BookService.deleteBook(id, loggedUser?.id);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <Container>
       <Row>
@@ -68,7 +86,7 @@ const Book = () => {
             {isLoading && <Spinner as='span' animation='border' size='sm' role='status' aria-hidden='true' />}
             Update
           </Button>
-          <Button type='submit' disabled={isLoading} variant='danger'>
+          <Button type='submit' disabled={isLoading} variant='danger' onClick={handleOnClickDelete}>
             {isLoading && <Spinner as='span' animation='border' size='sm' role='status' aria-hidden='true' />}
             Delete
           </Button>

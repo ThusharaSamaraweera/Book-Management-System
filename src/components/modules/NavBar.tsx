@@ -3,10 +3,10 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch, logout, setUser, useAppSelector } from "../../store";
+import { AppDispatch, logout, useAppSelector } from "../../store";
 import { useDispatch } from "react-redux";
 
-const NavBar = () => {
+export const NavBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const loggedUser = useAppSelector((state) => state.global.user);
@@ -51,8 +51,12 @@ const NavBar = () => {
             <NavDropdown title='Profile' id='basic-nav-dropdown'>
               <NavDropdown.Item href=''>Profile</NavDropdown.Item>
               <NavDropdown.Item onClick={handleOnClickAddBook}>Add Book</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={handleOnClickLogout}>Logout</NavDropdown.Item>
+              {loggedUser && (
+                <>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={handleOnClickLogout}>Logout</NavDropdown.Item>
+                </>
+              )}
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

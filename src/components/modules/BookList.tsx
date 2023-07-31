@@ -24,7 +24,7 @@ const BookList: React.FC<BookListProps> = ({ books, handleOnClickMore }) => {
           />
         );
       })}
-      <Row className='my-5'>
+      <Row className='my-5 mx-3'>
         <Button variant='dark' onClick={handleOnClickMore}>
           More
         </Button>
